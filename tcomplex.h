@@ -1,6 +1,7 @@
 #ifndef TCOMPLEX_H
 #define TCOMPLEX_H
 #include "tanumber.h"
+#include "ceditor.h"
 #include <QString>
 
 class TComplex: public TANumber
@@ -24,6 +25,7 @@ public:
     bool isZero() override;
     TComplex& get() override;
     void set(TANumber& A) override;
+    CEditor& getRedactor() override;
 };
 
 #endif // TCOMPLEX_H

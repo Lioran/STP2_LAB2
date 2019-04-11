@@ -1,6 +1,7 @@
 #ifndef TPNUMBER_H
 #define TPNUMBER_H
 #include "tanumber.h"
+#include "peditor.h"
 #include <QString>
 
 class TPNumber: public TANumber
@@ -26,6 +27,8 @@ public:
     QString from10(int new_basis);
     TPNumber& get() override;
     void set(TANumber& A) override;
+    void setBasis(int value);
+    PEditor& getRedactor() override;
 };
 
 #endif // TPNUMBER_H

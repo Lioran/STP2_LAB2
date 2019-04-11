@@ -122,3 +122,7 @@ TFrac& TFrac::get(){
 void TFrac::set(TANumber& A){
     *this = static_cast<TFrac&>(A);
 }
+
+FEditor& TFrac::getRedactor(){
+    return *(new FEditor());
+}

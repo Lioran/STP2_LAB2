@@ -1,6 +1,8 @@
 #ifndef TFRAC_H
 #define TFRAC_H
 #include "tanumber.h"
+#include "feditor.h"
+
 #include <QString>
 
 class TFrac : public TANumber
@@ -26,6 +28,7 @@ public:
     bool isZero() override;
     TFrac& get() override;
     void set(TANumber& A) override;
+    FEditor& getRedactor() override;
 };
 
 #endif // TFRAC_H

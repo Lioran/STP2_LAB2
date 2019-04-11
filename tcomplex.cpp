@@ -95,3 +95,7 @@ TComplex& TComplex::get(){
 void TComplex::set(TANumber& A){
     *this = static_cast<TComplex&>(A);
 }
+
+CEditor& TComplex::getRedactor(){
+    return *(new CEditor());
+}

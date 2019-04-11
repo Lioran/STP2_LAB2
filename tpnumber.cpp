@@ -6,6 +6,9 @@ TPNumber::TPNumber() {
     basis = 10;
     precision = 5;
 }
+void TPNumber::setBasis(int value){
+    this->basis = value;
+}
 QString TPNumber::to10(QString a, int b){
     int token = a.indexOf(".");
     if(token == -1){
@@ -147,4 +150,8 @@ bool TPNumber::operator==(TANumber& B) {
     TPNumber pi =  static_cast<TPNumber&>(B);
     if(this->number-pi.number == 0.0) return true;
     else false;
+}
+
+PEditor& TPNumber::getRedactor(){
+    return *(new PEditor(10));
 }

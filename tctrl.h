@@ -7,13 +7,14 @@
 
 enum TCtrlState {cStart = 0, cEditing, FunDone, cValDone, cExpDone, cOpDone, cOpChange, cError};
 enum Type {Frac = 0, Complex, PNumber};
+template <class t>
 class TCtrl
 {
 private:
     TCtrlState ctrlState;
 public:
     Type type;
-    TCtrl(Type type);
+    TCtrl();
     TCtrl(int bas);
     AEditor* editor;
     TANumber* number;

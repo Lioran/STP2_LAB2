@@ -9,34 +9,18 @@
 #include <QDebug>
 
 int basisForPNumber = 0;
-TCtrl::TCtrl(Type type)
+
+template <class T>
+TCtrl<T>::TCtrl()
 {
-    switch(type){
-        case Frac:{
-            this->editor = new FEditor();
-            this->number = new TFrac();
-            this->memory.setMemory(*this->number);
-            break;
-        }
-        case Complex:{
-            this->editor = new CEditor();
-            this->number = new TComplex();
-            this->memory.setMemory(*this->number);
-            break;
-        }
-    }
-    ctrlState = cStart;
-}
-TCtrl::TCtrl(int bas)
-{
-    basisForPNumber = bas;
-    this->editor = new PEditor(bas);
-    this->number = new TPNumber(1, bas, 5);
+    this->number = new T();
+    this->editor = this->number.getRedactor();
     this->memory.setMemory(*this->number);
     ctrlState = cStart;
 }
 
-void TCtrl::runCommandEditor(int command){
+template <class T>
+void TCtrl<T>::runCommandEditor(int command){
     int temp = 0;
     QString str;
     if(command >= 10){
@@ -76,12 +60,14 @@ void TCtrl::runCommandEditor(int command){
     }
 }
 
-void TCtrl::runOperation(){
+template <class T>
+void TCtrl<T>::runOperation(){
     this->proc.OperationRun();
     //this->memory.write(*proc.Lop_Res);
     this->setCtrlState(cOpDone);
 }
-void TCtrl::runMem(int command){
+template <class T>
+void TCtrl<T>::runMem(int command){
     switch(command){
         case 0: {
             this->memory.write(*this->number);
@@ -93,26 +79,41 @@ void TCtrl::runMem(int command){
         }
         case 2: {
             this->memory.ClearMem();
-            this->memory.setMemory(*this->number);
+            if(this->type == Frac){
+                TFrac* f = new TFrac(0, 1);
+                this->memory.setMemory(*f);
+            }
+            else if(this->type == Complex){
+                TComplex* f = new TComplex(0.0, 0.0);
+                this->memory.setMemory(*f);
+            }
+            else {
+                TPNumber* f = new TPNumber(1.0, 10, 2);
+                this->memory.setMemory(*f);
+            }
             break;
         }
     }
     this->setCtrlState(cOpDone);
 }
-void TCtrl::runFunc(){
+template <class T>
+void TCtrl<T>::runFunc(){
     this->proc.FuncRun(this->proc.op);
     //this->memory.write(*proc.Lop_Res);
     this->setCtrlState(cOpDone);
 }
 
-int TCtrl::getCtrlState(){
+template <class T>
+int TCtrl<T>::getCtrlState(){
     return this->ctrlState;
 }
 
-void TCtrl::setCtrlState(TCtrlState State){
+template <class T>
+void TCtrl<T>::setCtrlState(TCtrlState State){
     this->ctrlState = State;
 }
-void TCtrl::runCalc(int command){
+template <class T>
+void TCtrl<T>::runCalc(int command){
     int temp = 0;
     if(command >= 100){
         temp = command%100;
@@ -225,7 +226,8 @@ void TCtrl::runCalc(int command){
     }
 }
 
-void TCtrl::StrToNum(Type type){
+template <class T>
+void TCtrl<T>::StrToNum(Type type){
     switch(type){
         case Frac:{
             TFrac* new_d = new TFrac();
@@ -248,7 +250,9 @@ void TCtrl::StrToNum(Type type){
         }
     }
 }
-QString TCtrl::NumToStr(Type type, TANumber& other){
+
+template <class T>
+QString TCtrl<T>::NumToStr(Type type, TANumber& other){
     switch(type){
         case Frac:{
             TFrac new_d = static_cast<TFrac&>(other);
